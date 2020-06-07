@@ -3,7 +3,9 @@ import xlrd
 import xlwt
 from xlutils.copy import copy
 
-weekId = '3'
+weekId = input('请输入周数：')
+classCol = input('请输入列数：')
+
 resultPath = 'C:/shark/result_save.xlsx'
 templatePath = 'C:/shark/result_temp.xlsx'
 progressPath = 'C:/shark/class_job.xls'
@@ -66,8 +68,7 @@ def get_class_room_complete_state(student_id):
     # print(student_id)
     for k in range(classSheet.nrows):
         if str(classSheet.cell(k, 1).value) == str(student_id):
-            percent = str(classSheet.cell(k, 6).value)
-            print(">>" + str(float(percent[0:len(percent) - 1]) >= 100))
+            percent = str(classSheet.cell(k, int(classCol)).value)
             return float(percent[0:len(percent) - 1]) >= 100
     return False
 
@@ -89,11 +90,12 @@ for i in range(progressSheet.nrows):
         resultSheet.write(i, 5, get_complete_state(str(progressSheet.cell(i, 10).value)),
                           get_complete_color(str(progressSheet.cell(i, 10).value)))
 
-        resultSheet.col(0).width = 1500
-        resultSheet.col(1).width = 4000
-        resultSheet.col(2).width = 1500
-        resultSheet.col(3).width = 3000
-        resultSheet.col(4).width = 5000
-        resultSheet.col(5).width = 5000
+resultSheet.col(0).width = 1500
+resultSheet.col(1).width = 4000
+resultSheet.col(2).width = 1500
+resultSheet.col(3).width = 3000
+resultSheet.col(4).width = 5000
+resultSheet.col(5).width = 5000
+resultData.save(resultPath)
 
-        resultData.save(resultPath)
+input('目标Excel已生成！（输入任意字符，按回车结束）')
